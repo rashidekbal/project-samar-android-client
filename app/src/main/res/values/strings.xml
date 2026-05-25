@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">samar</string>
+    <string name="AppBarName">Samar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Close</string>
+    <string name="star">✦</string>
+    <string name="empty_title">Hi, I\'m Samar</string>
+    <string name="empty_screen_sub">Your intelligent AI assistant. Ask me \n anything — I\'m here to help.</string>
+    <string name="write_something">Write something</string>
+    <string name="explain_a_concept">Explain a concept</string>
+    <string name="research_a_topic">Research a topic</string>
+    <string name="help_with_coding">Help with coding</string>
+    <string name="online">Online</string>
+    <string name="message_hint">Message samar...</string>
+    <string name="new_chat_icon_desc">new chat icon</string>
+    <string name="hand_icon_desc">hand icon</string>
+    <string name="bulb_desc">bulb</string>
+    <string name="search_icon_desc">search icon</string>
+    <string name="computer_icon_desc">computer icon</string>
+    <string name="attachment_icon_desc">attachment icon</string>
+    <string name="send_message_desc">send message</string>
 </resources>

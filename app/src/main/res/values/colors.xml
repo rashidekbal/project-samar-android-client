@@ -2,4 +2,16 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="bg">#080A0F</color>
+    <color name="surface">#0F1218</color>
+    <color name="surface2">#161B24</color>
+    <color name="surface3">#1C2230</color>
+    <color name="accent"> #6378FF</color>
+    <color name="accent2"> #8B6FFF</color>
+    <color name="text">#E8EBF5</color>
+    <color name="text2">#8A90AA</color>
+    <color name="text3">#555B72</color>
+    <color name="ai_bubble">#161B24</color>
+    <color name="danger">#FF4C6A</color>
+    <color name="success">#3DD68C</color>
 </resources>
