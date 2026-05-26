@@ -1,11 +1,13 @@
 package com.rtechnologies.samar.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.rtechnologies.samar.R;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(viewBinding.getRoot());
-
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.surface3));
         init();
         setupChatScreen();
 

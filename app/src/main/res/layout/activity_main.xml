@@ -16,7 +16,7 @@
         />
     <FrameLayout
         android:id="@+id/sideBar"
-        android:layout_width="@dimen/dp_300"
+        android:layout_width="@dimen/dp_350"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/surface2"

@@ -7,7 +7,7 @@
     <string name="close_drawer">Close</string>
     <string name="star">✦</string>
     <string name="empty_title">Hi, I\'m Samar</string>
-    <string name="empty_screen_sub">Your intelligent AI assistant. Ask me \n anything — I\'m here to help.</string>
+    <string name="empty_screen_sub">Your Best friend. tell me \n anything — I\'m here</string>
     <string name="write_something">Write something</string>
     <string name="explain_a_concept">Explain a concept</string>
     <string name="research_a_topic">Research a topic</string>
@@ -21,4 +21,11 @@
     <string name="computer_icon_desc">computer icon</string>
     <string name="attachment_icon_desc">attachment icon</string>
     <string name="send_message_desc">send message</string>
+    <string name="your_best_friend">Your best friend</string>
+    <string name="new_conversation">New conversation</string>
+    <string name="settings">Settings</string>
+    <string name="rashid">Rashid</string>
+    <string name="rasidekbal_dev_samar_app">rasidekbal.dev@samar.app</string>
+    <string name="search_conversation">Search conversation</string>
+    <string name="r">R</string>
 </resources>
