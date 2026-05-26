@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.Fragment_chat"
     android:background="@color/bg">
+<!--    header-->
     <androidx.cardview.widget.CardView
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -78,6 +79,7 @@
 
         </androidx.appcompat.widget.Toolbar>
     </androidx.cardview.widget.CardView>
+<!--    new chat preText-->
     <LinearLayout
         android:id="@+id/new_chat_layout"
         android:layout_width="match_parent"
@@ -88,6 +90,7 @@
         app:layout_constraintBottom_toTopOf="@id/chatInput_CardView"
         android:orientation="vertical"
         android:gravity="center_horizontal"
+        android:visibility="gone"
         >
         <com.google.android.material.card.MaterialCardView
             android:layout_width="@dimen/dp_60"
@@ -277,6 +280,17 @@
 
 
     </LinearLayout>
+<!--    recycler view -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/chatInput_CardView"
+        android:layout_marginBottom="@dimen/dp_12"
+        />
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/chatInput_CardView"
         android:layout_width="match_parent"
