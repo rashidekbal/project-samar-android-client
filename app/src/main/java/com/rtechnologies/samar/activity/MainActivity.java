@@ -4,10 +4,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.rtechnologies.samar.R;
@@ -16,7 +18,7 @@ import com.rtechnologies.samar.fragments.Fragment_chat;
 import com.rtechnologies.samar.fragments.Fragment_drawer;
 
 public class MainActivity extends AppCompatActivity {
-    ActivityMainBinding viewBinding;
+     ActivityMainBinding viewBinding;
     FragmentManager fragmentManager;
     ActionBarDrawerToggle drawerToggle;
 
@@ -43,5 +45,16 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(viewBinding.mainContainer.getId(),new Fragment_chat())
                 .commit();
         fragmentManager.beginTransaction().replace(viewBinding.sideBar.getId(),new Fragment_drawer()).commit();
+    }
+    public void closeDrawer(){
+        viewBinding.main.closeDrawer(GravityCompat.START);
+    }
+    public void changeFragment(Fragment_chat fragment,@Nullable Bundle bundle){
+        if(bundle!=null) {
+            fragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(viewBinding.mainContainer.getId(),fragment).commit();
+            return;
+        }
+        fragmentManager.beginTransaction().replace(viewBinding.mainContainer.getId(),fragment).commit();
     }
 }
