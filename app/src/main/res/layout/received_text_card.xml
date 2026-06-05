@@ -27,8 +27,9 @@
             android:text="@string/empty_screen_sub"
             android:textColor="@color/white"
             android:lineBreakWordStyle="phrase"
-            android:textSize="@dimen/sp_13"
-            android:fontFamily="@font/sora"/>
+            android:textSize="@dimen/sp_16"
+            android:fontFamily="@font/sora"
+            android:textIsSelectable="true"/>
     </LinearLayout>
     <TextView
         android:id="@+id/time"

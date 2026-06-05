@@ -14,7 +14,7 @@ import java.util.List;
 public interface ChatDao {
     @Query("select * from chats where conversationId=:conversationId order by id asc")
     LiveData<List<ChatSchema>> getChats(String conversationId);
-    @Query("select * from chats where conversationId is null order by id asc limit 1")
+    @Query("select * from chats where conversationId is null order by id desc limit 1")
     LiveData<List<ChatSchema>> getUnClammedChat();
     @Insert
     long insertChat(ChatSchema chatSchema);

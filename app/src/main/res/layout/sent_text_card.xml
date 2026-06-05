@@ -25,7 +25,7 @@
             android:text="@string/empty_screen_sub"
             android:textColor="@color/white"
             android:lineBreakWordStyle="phrase"
-            android:textSize="@dimen/sp_13"
+            android:textSize="@dimen/sp_16"
             android:fontFamily="@font/sora"
             android:paddingVertical="@dimen/dp_8"
             android:paddingHorizontal="@dimen/dp_12"/>
@@ -40,6 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="@dimen/sp_10"
-        android:layout_marginVertical="@dimen/dp_4"/>
+        android:layout_marginVertical="@dimen/dp_4"
+        android:textIsSelectable="true"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

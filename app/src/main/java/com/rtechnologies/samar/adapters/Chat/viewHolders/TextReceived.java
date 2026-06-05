@@ -7,7 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rtechnologies.samar.R;
+import com.rtechnologies.samar.Samar;
 import com.rtechnologies.samar.roomdb.schema.ChatSchema;
+
+import io.noties.markwon.Markwon;
 
 public class TextReceived extends RecyclerView.ViewHolder {
     TextView message,time;
@@ -19,7 +22,8 @@ public class TextReceived extends RecyclerView.ViewHolder {
     }
 
     public static void bind(TextReceived holder, ChatSchema data){
-        holder.message.setText(data.getMessage());
+        Markwon markwon=Markwon.create(Samar.getGlobalContext());
+        markwon.setMarkdown(holder.message,data.getMessage());
 
 //        TODO:handle time with actual time
         holder.time.setText("12:55");

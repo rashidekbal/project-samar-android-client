@@ -288,8 +288,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/chatInput_CardView"
+        android:layout_marginTop="@dimen/dp_65"
         android:layout_marginBottom="@dimen/dp_12"
         android:visibility="gone"
+
         />
 
     <com.google.android.material.card.MaterialCardView
@@ -307,9 +309,11 @@
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_60"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_66"
             android:background="@color/surface2"
-            android:paddingHorizontal="10dp">
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="@dimen/dp_10">
             <ImageView
                 android:id="@+id/attachment"
                 android:layout_width="@dimen/dp_45"
@@ -333,7 +337,7 @@
                 android:minHeight="48dp"
                 android:textColor="@color/text2"
                 android:textColorHint="@color/text2"
-                android:textSize="@dimen/sp_14"
+                android:textSize="@dimen/sp_17"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/send_btn"
                 app:layout_constraintStart_toEndOf="@id/attachment"
