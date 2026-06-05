@@ -285,7 +285,7 @@
                             android:textColor="@color/white"
                             android:elevation="@dimen/sp_1"
                             android:textAlignment="center"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             />
                     </androidx.cardview.widget.CardView>
                     <LinearLayout

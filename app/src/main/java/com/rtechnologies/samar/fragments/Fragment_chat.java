@@ -3,6 +3,7 @@ package com.rtechnologies.samar.fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,11 +22,19 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Fragment_chat extends Fragment {
-    FragmentChatBinding viewBinding;
-    ArrayList<MessageModel> list;
-    MessageAdapter adapter;
+    private FragmentChatBinding viewBinding;
+    private ArrayList<MessageModel> list;
+    private MessageAdapter adapter;
+    private String conversationId=null;
     public Fragment_chat() {
         // Required empty public constructor
+    }
+    public Fragment_chat getInstance(@Nullable String conversationId){
+        Fragment_chat fragment=new Fragment_chat();
+        Bundle bundle=new Bundle();
+        bundle.putString("cId",conversationId);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -35,7 +44,12 @@ public class Fragment_chat extends Fragment {
         setUpToolbar();
         init();
         setupRecyclerView();
+        setupEventListeners();
      return viewBinding.getRoot();
+    }
+
+    private void setupEventListeners() {
+        viewBinding.sendBtn.setOnClickListener(this::handleSendClick);
     }
 
     private void setupRecyclerView() {
@@ -44,12 +58,14 @@ public class Fragment_chat extends Fragment {
     }
 
     private void init() {
+        if(getArguments()!=null){
+            conversationId=getArguments().getString("cId");
+            loadChats();
+        }else{
+            setUpNewChat();
+
+        }
         list=new ArrayList<>();
-//        TODO:add dynamic handling via viewModel
-        list.add(new MessageModel(1, MessageType.TEXT.toString(),"xyz","abc","hi",true));
-        list.add(new MessageModel(2, MessageType.TEXT.toString(),"xyz1s","abc","hello how can i help you today",false));
-        list.add(new MessageModel(3, MessageType.TEXT.toString(),"xyz2s","abc","tell me about how to make an app",true));
-        list.add(new MessageModel(4, MessageType.TEXT.toString(),"xyz3s","abc","here is a simple app that prints hello world in python 'print('hello')'",false));
         adapter=new MessageAdapter(requireActivity(),list);
     }
 
@@ -60,6 +76,33 @@ public class Fragment_chat extends Fragment {
         if(activity instanceof MainActivity){
             ((MainActivity) activity).setUpDrawerToggleWithToolBar(viewBinding.toolbar);
         }
+    }
+    private void loadChats(){
+//        add chat loading for existing conversation
+    }
+    private void setUpNewChat(){
+        viewBinding.recyclerView.setVisibility(View.GONE);
+        viewBinding.newChatLayout.setVisibility(View.VISIBLE);
+    }
+    private void handleSendClick(View v){
+        String input=viewBinding.messageInput.getText().toString().trim();
+        if(input.isBlank())return;
+        if(conversationId==null){
+             handleNewChat(input);
+            return;
+        }
+        handleMessageSend(input);
+
+    }
+
+    private void handleMessageSend(String message) {
+//        service call for sending message
+
+    }
+
+    private void handleNewChat(String message) {
+//        service call for creating new chat and setting up its cid in fragment
+
     }
 
 }

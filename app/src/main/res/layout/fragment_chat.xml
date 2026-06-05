@@ -90,7 +90,7 @@
         app:layout_constraintBottom_toTopOf="@id/chatInput_CardView"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         >
         <com.google.android.material.card.MaterialCardView
             android:layout_width="@dimen/dp_60"
@@ -289,6 +289,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/chatInput_CardView"
         android:layout_marginBottom="@dimen/dp_12"
+        android:visibility="gone"
         />
 
     <com.google.android.material.card.MaterialCardView
@@ -321,7 +322,7 @@
                 android:contentDescription="@string/attachment_icon_desc"
                 />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <EditText
                 android:id="@+id/message_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
