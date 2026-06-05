@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -16,16 +17,22 @@ import com.rtechnologies.samar.activity.MainActivity;
 import com.rtechnologies.samar.adapters.Chat.MessageAdapter;
 import com.rtechnologies.samar.constant.MessageType;
 import com.rtechnologies.samar.databinding.FragmentChatBinding;
-import com.rtechnologies.samar.models.MessageModel;
+import com.rtechnologies.samar.interfaces.ChatServiceCallback;
+import com.rtechnologies.samar.roomdb.schema.ChatSchema;
+import com.rtechnologies.samar.service.ServiceProvider;
+import com.rtechnologies.samar.utils.Logger;
+import com.rtechnologies.samar.viewModel.ChatViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Fragment_chat extends Fragment {
     private FragmentChatBinding viewBinding;
-    private ArrayList<MessageModel> list;
+    private List<ChatSchema> list;
     private MessageAdapter adapter;
     private String conversationId=null;
+    private ChatViewModel chatViewModel;
     public Fragment_chat() {
         // Required empty public constructor
     }
@@ -58,15 +65,18 @@ public class Fragment_chat extends Fragment {
     }
 
     private void init() {
+        list=new ArrayList<>();
+        adapter=new MessageAdapter(requireActivity(),list);
+        chatViewModel=new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
         if(getArguments()!=null){
             conversationId=getArguments().getString("cId");
             loadChats();
         }else{
+            Logger.log("setting up new chat");
             setUpNewChat();
 
         }
-        list=new ArrayList<>();
-        adapter=new MessageAdapter(requireActivity(),list);
+
     }
 
     private void setUpToolbar(){
@@ -78,7 +88,29 @@ public class Fragment_chat extends Fragment {
         }
     }
     private void loadChats(){
-//        add chat loading for existing conversation
+        if(conversationId==null){
+        chatViewModel.getChats().observe(getViewLifecycleOwner(),list->{
+          if(!list.isEmpty()){
+              viewBinding.recyclerView.setVisibility(View.VISIBLE);
+              viewBinding.newChatLayout.setVisibility(View.GONE);
+              this.list.clear();
+              this.list.addAll(list);
+              adapter.notifyItemRangeChanged(0,list.size());
+              viewBinding.recyclerView.scrollToPosition(list.size()-1);
+          }
+        });}else{
+            chatViewModel.getChats(conversationId).observe(getViewLifecycleOwner(),list->{
+                if(!list.isEmpty()){
+                    viewBinding.recyclerView.setVisibility(View.VISIBLE);
+                    viewBinding.newChatLayout.setVisibility(View.GONE);
+                    this.list.clear();
+                    this.list.addAll(list);
+                    adapter.notifyItemRangeChanged(0,list.size());
+                    viewBinding.recyclerView.scrollToPosition(list.size()-1);
+                }
+            });
+
+        }
     }
     private void setUpNewChat(){
         viewBinding.recyclerView.setVisibility(View.GONE);
@@ -87,8 +119,10 @@ public class Fragment_chat extends Fragment {
     private void handleSendClick(View v){
         String input=viewBinding.messageInput.getText().toString().trim();
         if(input.isBlank())return;
+        viewBinding.messageInput.setText("");
         if(conversationId==null){
              handleNewChat(input);
+
             return;
         }
         handleMessageSend(input);
@@ -96,12 +130,40 @@ public class Fragment_chat extends Fragment {
     }
 
     private void handleMessageSend(String message) {
-//        service call for sending message
+        Logger.log("old conversation start");
+        ServiceProvider.chatService.newMessage(MessageType.TEXT.toString(), conversationId, message, new ChatServiceCallback() {
+            @Override
+            public void onNewChatSuccess(String conversation_id) {
+                Logger.log(" conversation success and convid"+conversation_id);
 
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Logger.log("from chat fragment send message"+message);
+
+            }
+        });
     }
 
     private void handleNewChat(String message) {
-//        service call for creating new chat and setting up its cid in fragment
+        Logger.log("new conversation start");
+        ServiceProvider.chatService.newConversation(MessageType.TEXT.toString(), message, new ChatServiceCallback() {
+            @Override
+            public void onNewChatSuccess(String conversation_id) {
+                Logger.log("new conversation success conid"+conversation_id);
+                conversationId=conversation_id;
+                loadChats();
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Logger.log("from chat fragment new chat"+message);
+
+            }
+        });
+        loadChats();
 
     }
 

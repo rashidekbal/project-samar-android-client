@@ -4,6 +4,7 @@ import androidx.room.RoomDatabase;
 
 import com.rtechnologies.samar.Samar;
 import com.rtechnologies.samar.roomdb.dao.ChatDao;
+import com.rtechnologies.samar.roomdb.dao.ChatGroupDao;
 import com.rtechnologies.samar.roomdb.schema.ChatGroupSchema;
 import com.rtechnologies.samar.roomdb.schema.ChatSchema;
 
@@ -19,6 +20,7 @@ public abstract class Db extends RoomDatabase {
         return instance;
     }
     public abstract ChatDao chatDao();
+    public abstract ChatGroupDao chatGroupDao();
 
 
 

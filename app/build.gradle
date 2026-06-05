@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+
     namespace 'com.rtechnologies.samar'
     compileSdk {
         version = release(36) {
@@ -21,8 +22,13 @@ android {
     }
 
     buildTypes {
+        android.buildFeatures.buildConfig = true
+        debug{
+            buildConfigField "String", "baseUrl" ,"\"https://svdj39w9-8000.inc1.devtunnels.ms\""
+        }
         release {
-            minifyEnabled false
+            buildConfigField "String", "baseUrl", "\"https://svdj39w9-8000.inc1.devtunnels.ms\""
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

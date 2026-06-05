@@ -7,22 +7,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.rtechnologies.samar.R;
 import com.rtechnologies.samar.interfaces.ConversationHistoryCardInterface;
-import com.rtechnologies.samar.models.ConversationHistory;
+import com.rtechnologies.samar.roomdb.schema.ChatGroupSchema;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
-    ArrayList<ConversationHistory> list;
+    List<ChatGroupSchema> list;
     ConversationHistoryCardInterface callbackInterface;
     public int selectedId;
-    public HistoryAdapter(Context context,ArrayList<ConversationHistory> list,ConversationHistoryCardInterface callbackInterface){
+    public HistoryAdapter(Context context,List<ChatGroupSchema> list,ConversationHistoryCardInterface callbackInterface){
         this.context=context;
         this.list=list;
         this.callbackInterface=callbackInterface;

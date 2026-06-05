@@ -12,18 +12,18 @@ import com.rtechnologies.samar.R;
 import com.rtechnologies.samar.adapters.Chat.viewHolders.TextReceived;
 import com.rtechnologies.samar.adapters.Chat.viewHolders.TextSent;
 import com.rtechnologies.samar.constant.MessageType;
-import com.rtechnologies.samar.models.MessageModel;
+import com.rtechnologies.samar.roomdb.schema.ChatSchema;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
-    ArrayList<MessageModel> list;
+    List<ChatSchema> list;
     private final int TEXT_RECEIVED=1;
     private final int TEXT_SENT=2;
 
 
-    public MessageAdapter(Context context, ArrayList<MessageModel> list){
+    public MessageAdapter(Context context, List<ChatSchema> list){
         this.context=context;
         this.list=list;
     }

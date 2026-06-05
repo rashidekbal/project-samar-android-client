@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rtechnologies.samar.R;
-import com.rtechnologies.samar.models.MessageModel;
+import com.rtechnologies.samar.roomdb.schema.ChatSchema;
 
 public class TextSent extends RecyclerView.ViewHolder {
     TextView message,state_time;
@@ -20,7 +20,7 @@ public class TextSent extends RecyclerView.ViewHolder {
 
 
 
-    public static void bind(TextSent holder, MessageModel data){
+    public static void bind(TextSent holder, ChatSchema data){
         holder.message.setText(data.getMessage());
 //              TODO:handle time with actual time
         holder.state_time.setText("12:55");

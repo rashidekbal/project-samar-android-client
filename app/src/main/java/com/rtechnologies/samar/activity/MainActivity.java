@@ -42,19 +42,13 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
     }
     private void setupChatScreen(){
-        fragmentManager.beginTransaction().replace(viewBinding.mainContainer.getId(),new Fragment_chat())
-                .commit();
+        fragmentManager.beginTransaction().add(viewBinding.mainContainer.getId(),new Fragment_chat()).commit();
         fragmentManager.beginTransaction().replace(viewBinding.sideBar.getId(),new Fragment_drawer()).commit();
     }
     public void closeDrawer(){
         viewBinding.main.closeDrawer(GravityCompat.START);
     }
-    public void changeFragment(Fragment_chat fragment,@Nullable Bundle bundle){
-        if(bundle!=null) {
-            fragment.setArguments(bundle);
-            fragmentManager.beginTransaction().replace(viewBinding.mainContainer.getId(),fragment).commit();
-            return;
-        }
+    public void changeFragment(Fragment_chat fragment){
         fragmentManager.beginTransaction().replace(viewBinding.mainContainer.getId(),fragment).commit();
     }
 }
