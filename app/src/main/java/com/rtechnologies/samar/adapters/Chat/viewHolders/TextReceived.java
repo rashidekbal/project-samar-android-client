@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rtechnologies.samar.R;
 import com.rtechnologies.samar.Samar;
 import com.rtechnologies.samar.roomdb.schema.ChatSchema;
+import com.rtechnologies.samar.utils.DateUtil;
 
 import io.noties.markwon.Markwon;
 
@@ -24,9 +25,7 @@ public class TextReceived extends RecyclerView.ViewHolder {
     public static void bind(TextReceived holder, ChatSchema data){
         Markwon markwon=Markwon.create(Samar.getGlobalContext());
         markwon.setMarkdown(holder.message,data.getMessage());
-
-//        TODO:handle time with actual time
-        holder.time.setText("12:55");
+        holder.time.setText(DateUtil.getMessageTime(data.getTimeStamp()));
 
     }
 }

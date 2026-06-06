@@ -1,9 +1,12 @@
 package com.rtechnologies.samar.service;
 
 import com.androidnetworking.error.ANError;
+import com.rtechnologies.samar.Samar;
 import com.rtechnologies.samar.constant.MessageType;
+import com.rtechnologies.samar.constant.NetworkOperationTags;
 import com.rtechnologies.samar.interfaces.ApiResponseInterface;
 import com.rtechnologies.samar.interfaces.ChatServiceCallback;
+import com.rtechnologies.samar.networking.ApiProvider;
 import com.rtechnologies.samar.networking.chatProvider.ChatApiProvider;
 import com.rtechnologies.samar.roomdb.DbHelper;
 import com.rtechnologies.samar.service.abstractClasses.ChatBluePrint;
@@ -126,5 +129,10 @@ public class ChatService extends ChatBluePrint {
         });
 
 
+    }
+    @Override
+    public void cancelMessageSending(){
+        ApiProvider.helper.nm.cancelRequest(NetworkOperationTags.CHAT_SEND.toString());
+        new DbHelper(Samar.getGlobalContext()).remove_chatsWithoutParent();
     }
 }

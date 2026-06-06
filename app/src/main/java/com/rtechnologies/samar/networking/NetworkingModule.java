@@ -13,8 +13,8 @@ import org.json.JSONObject;
 
 public class NetworkingModule extends Networking {
     @Override
-    public void post(String url, @Nullable JSONObject body, @Nullable String JwtToken, ApiResponseInterface apiResponseInterface) {
-        AndroidNetworking.post(url).setPriority(Priority.HIGH).addJSONObjectBody(body).addHeaders("Authorization","Bearer "+JwtToken).build().getAsJSONObject(new JSONObjectRequestListener() {
+    public void post(@Nullable String TAG,String url, @Nullable JSONObject body, @Nullable String JwtToken, ApiResponseInterface apiResponseInterface) {
+        AndroidNetworking.post(url).setPriority(Priority.HIGH).addJSONObjectBody(body).addHeaders("Authorization","Bearer "+JwtToken).setTag(TAG).build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                apiResponseInterface.onSuccess(jsonObject);
@@ -29,8 +29,8 @@ public class NetworkingModule extends Networking {
     }
 
     @Override
-    public void get(String url, @Nullable String JwtToken, ApiResponseInterface apiResponseInterface) {
-        AndroidNetworking.get(url).setPriority(Priority.HIGH).addHeaders("Authorization","Bearer "+JwtToken).build().getAsJSONObject(new JSONObjectRequestListener() {
+    public void get(@Nullable String TAG,String url, @Nullable String JwtToken, ApiResponseInterface apiResponseInterface) {
+        AndroidNetworking.get(url).setPriority(Priority.HIGH).addHeaders("Authorization","Bearer "+JwtToken).setTag(TAG).build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 apiResponseInterface.onSuccess(response);
@@ -45,8 +45,8 @@ public class NetworkingModule extends Networking {
     }
 
     @Override
-    public void patch(String url, @Nullable JSONObject body, @Nullable String JwtToken, ApiResponseInterface apiResponseInterface) {
-        AndroidNetworking.patch(url).setPriority(Priority.HIGH).addJSONObjectBody(body).addHeaders("Authorization","Bearer "+JwtToken).build().getAsJSONObject(new JSONObjectRequestListener() {
+    public void patch(@Nullable String TAG,String url, @Nullable JSONObject body, @Nullable String JwtToken, ApiResponseInterface apiResponseInterface) {
+        AndroidNetworking.patch(url).setPriority(Priority.HIGH).addJSONObjectBody(body).addHeaders("Authorization","Bearer "+JwtToken).setTag(TAG).build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 apiResponseInterface.onSuccess(jsonObject);
@@ -61,8 +61,8 @@ public class NetworkingModule extends Networking {
     }
 
     @Override
-    public void delete(String url, @Nullable String JwtToken, ApiResponseInterface apiResponseInterface) {
-        AndroidNetworking.delete(url).setPriority(Priority.HIGH).addHeaders("Authorization","Bearer "+JwtToken).build().getAsJSONObject(new JSONObjectRequestListener() {
+    public void delete(@Nullable String TAG,String url, @Nullable String JwtToken, ApiResponseInterface apiResponseInterface) {
+        AndroidNetworking.delete(url).setPriority(Priority.HIGH).addHeaders("Authorization","Bearer "+JwtToken).setTag(TAG).build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 apiResponseInterface.onSuccess(jsonObject);
@@ -74,5 +74,10 @@ public class NetworkingModule extends Networking {
 
             }
         });
+    }
+
+    @Override
+    public void cancelRequest(String Tag) {
+        AndroidNetworking.cancel(Tag);
     }
 }

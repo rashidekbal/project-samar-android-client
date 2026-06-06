@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rtechnologies.samar.R;
 import com.rtechnologies.samar.roomdb.schema.ChatSchema;
+import com.rtechnologies.samar.utils.DateUtil;
 
 public class TextSent extends RecyclerView.ViewHolder {
     TextView message,state_time;
@@ -22,7 +23,6 @@ public class TextSent extends RecyclerView.ViewHolder {
 
     public static void bind(TextSent holder, ChatSchema data){
         holder.message.setText(data.getMessage());
-//              TODO:handle time with actual time
-        holder.state_time.setText("12:55");
+        holder.state_time.setText(DateUtil.getMessageTime(data.getTimeStamp()));
     }
 }

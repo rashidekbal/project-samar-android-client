@@ -13,6 +13,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.rtechnologies.samar.R;
 import com.rtechnologies.samar.interfaces.ConversationHistoryCardInterface;
 import com.rtechnologies.samar.roomdb.schema.ChatGroupSchema;
+import com.rtechnologies.samar.utils.DateUtil;
 
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                  selectedId=list.get(position).getId();
 
              });
+             holder.time.setText(DateUtil.getTimeDiff(DateUtil.getDateObject(list.get(position).getTimeStamp())));
          }
 
 

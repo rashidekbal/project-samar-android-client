@@ -33,7 +33,7 @@ public class ChatGroupSchema {
 
     //  used to create new conversation when no id is present but server will make one and provide
     @Ignore
-    public ChatGroupSchema( String conversationId, String title, String timeStamp) {
+    public  ChatGroupSchema( String conversationId, String title, String timeStamp) {
         this.conversationId = conversationId;
         this.title = title;
         this.timeStamp = timeStamp;

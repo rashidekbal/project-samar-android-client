@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rtechnologies.samar.activity.MainActivity;
 import com.rtechnologies.samar.adapters.Chat.MessageAdapter;
@@ -33,6 +35,8 @@ public class Fragment_chat extends Fragment {
     private MessageAdapter adapter;
     private String conversationId=null;
     private ChatViewModel chatViewModel;
+    private MainActivity activity;
+    private  String lastMessage="";
     public Fragment_chat() {
         // Required empty public constructor
     }
@@ -57,6 +61,14 @@ public class Fragment_chat extends Fragment {
 
     private void setupEventListeners() {
         viewBinding.sendBtn.setOnClickListener(this::handleSendClick);
+        viewBinding.prePrompt1.setOnClickListener(this::handlePrePromptCardClick);
+        viewBinding.prePrompt2.setOnClickListener(this::handlePrePromptCardClick);
+        viewBinding.prePrompt3.setOnClickListener(this::handlePrePromptCardClick);
+        viewBinding.prePrompt4.setOnClickListener(this::handlePrePromptCardClick);
+        viewBinding.chatPauseBtn.setOnClickListener(this::handleSendMessageCancel);
+        viewBinding.attachment.setOnClickListener(v-> Toast.makeText(requireActivity(),"coming soon",Toast.LENGTH_SHORT).show());
+        viewBinding.newChatIcon.setOnClickListener(v->{activity.changeFragment(new Fragment_chat());activity.closeDrawer();
+           });
     }
 
     private void setupRecyclerView() {
@@ -65,6 +77,7 @@ public class Fragment_chat extends Fragment {
     }
 
     private void init() {
+        activity=(MainActivity) requireActivity();
         list=new ArrayList<>();
         adapter=new MessageAdapter(requireActivity(),list);
         chatViewModel=new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
@@ -81,7 +94,7 @@ public class Fragment_chat extends Fragment {
 
     private void setUpToolbar(){
         AppCompatActivity activity=(AppCompatActivity) requireActivity();
-        activity.setSupportActionBar((androidx.appcompat.widget.Toolbar) viewBinding.toolbar);
+        activity.setSupportActionBar( viewBinding.toolbar);
         Objects.requireNonNull(activity.getSupportActionBar()).setDisplayShowTitleEnabled(false);
         if(activity instanceof MainActivity){
             ((MainActivity) activity).setUpDrawerToggleWithToolBar(viewBinding.toolbar);
@@ -119,6 +132,8 @@ public class Fragment_chat extends Fragment {
     private void handleSendClick(View v){
         String input=viewBinding.messageInput.getText().toString().trim();
         if(input.isBlank())return;
+        setStateChatCompleting();
+        lastMessage=input;
         viewBinding.messageInput.setText("");
         if(conversationId==null){
              handleNewChat(input);
@@ -129,12 +144,21 @@ public class Fragment_chat extends Fragment {
 
     }
 
+    private void setStateChatCompleting() {
+        viewBinding.chatPauseBtn.setVisibility(View.VISIBLE);
+        viewBinding.sendBtn.setVisibility(View.GONE);
+    }
+    private void setStateChatCompleted() {
+        viewBinding.chatPauseBtn.setVisibility(View.GONE);
+        viewBinding.sendBtn.setVisibility(View.VISIBLE);
+    }
+
     private void handleMessageSend(String message) {
         Logger.log("old conversation start");
         ServiceProvider.chatService.newMessage(MessageType.TEXT.toString(), conversationId, message, new ChatServiceCallback() {
             @Override
             public void onNewChatSuccess(String conversation_id) {
-                Logger.log(" conversation success and convid"+conversation_id);
+                setStateChatCompleted();
 
             }
 
@@ -151,7 +175,7 @@ public class Fragment_chat extends Fragment {
         ServiceProvider.chatService.newConversation(MessageType.TEXT.toString(), message, new ChatServiceCallback() {
             @Override
             public void onNewChatSuccess(String conversation_id) {
-                Logger.log("new conversation success conid"+conversation_id);
+                setStateChatCompleted();
                 conversationId=conversation_id;
                 loadChats();
 
@@ -164,6 +188,21 @@ public class Fragment_chat extends Fragment {
             }
         });
         loadChats();
+
+    }
+
+    private void handlePrePromptCardClick(View v){
+        String prompt =((TextView)v).getText().toString().trim();
+        if(prompt.isBlank())return;
+        viewBinding.messageInput.setText(prompt);
+        handleSendClick(viewBinding.sendBtn);
+
+    }
+    private void handleSendMessageCancel(View v){
+        ServiceProvider.chatService.cancelMessageSending();
+        setStateChatCompleted();
+        viewBinding.messageInput.setText(lastMessage);
+
 
     }
 

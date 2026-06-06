@@ -6,4 +6,5 @@ public class ApiProvider {
   private static final NetworkingModule networkingModule=new NetworkingModule();
 
   public static final ChatApiProvider chatApiProvider=new ChatApiProvider(networkingModule);
+  public static final NetworkingHelper helper=new NetworkingHelper(networkingModule);
 }

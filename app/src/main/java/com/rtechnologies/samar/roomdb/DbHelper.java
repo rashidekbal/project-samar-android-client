@@ -54,6 +54,11 @@ public class DbHelper {
             callback.onChatsLoaded(Db.getInstance().chatDao().getChats(conversationId));
         });
     }
+    public void remove_chatsWithoutParent(){
+        executorService.execute(()->{
+            Db.getInstance().chatDao().delete_chat_without_parent();
+        });
+    }
 
 
 

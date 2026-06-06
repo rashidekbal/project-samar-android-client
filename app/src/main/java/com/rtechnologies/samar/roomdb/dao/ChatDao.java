@@ -5,7 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.rtechnologies.samar.roomdb.schema.ChatGroupSchema;
 import com.rtechnologies.samar.roomdb.schema.ChatSchema;
 
 import java.util.List;
@@ -20,6 +19,8 @@ public interface ChatDao {
     long insertChat(ChatSchema chatSchema);
     @Query("update chats set messageId=:message_id, conversationId=:conversation_id where id=:id")
     void updateMessageId(long id,String message_id,String conversation_id);
+    @Query("delete from chats where messageId is null")
+    void delete_chat_without_parent();
 
 
 

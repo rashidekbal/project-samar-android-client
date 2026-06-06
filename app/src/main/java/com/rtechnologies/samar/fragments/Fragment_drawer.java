@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -18,7 +17,6 @@ import com.rtechnologies.samar.activity.MainActivity;
 import com.rtechnologies.samar.adapters.HistoryAdapter;
 import com.rtechnologies.samar.databinding.FragmentDrawerBinding;
 import com.rtechnologies.samar.roomdb.schema.ChatGroupSchema;
-import com.rtechnologies.samar.utils.DateUtil;
 import com.rtechnologies.samar.viewModel.ChatGroupViewModel;
 
 import java.util.ArrayList;
