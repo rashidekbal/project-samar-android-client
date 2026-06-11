@@ -40,6 +40,7 @@ public class Fragment_drawer extends Fragment {
         viewBinding=FragmentDrawerBinding.inflate(inflater,container,false);
         init();
         observeConversation();
+        observerConversationIdSelected();
         setUpRecyclerView();
         setOnClickListeners();
         return viewBinding.getRoot();
@@ -51,6 +52,14 @@ public class Fragment_drawer extends Fragment {
         activity=(MainActivity) requireActivity();
         adapter=new HistoryAdapter(requireActivity(),historyList, this::itemSelected);
         conversationHistoryViewModel=new ViewModelProvider(activity).get(ChatGroupViewModel.class);
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    private void observerConversationIdSelected(){
+        conversationHistoryViewModel.getActiveConversationId().observe(activity,conversation_id->{
+            if(conversation_id ==null)return;
+           adapter.selectedConvId =conversation_id;
+           adapter.notifyDataSetChanged();
+        });
     }
     private void observeConversation(){
         conversationHistoryViewModel.getConversations().observe(getViewLifecycleOwner(),list->{
@@ -71,7 +80,7 @@ public class Fragment_drawer extends Fragment {
         viewBinding.newConversationCardBtn.setOnClickListener(v-> {
             activity.changeFragment(new Fragment_chat());
             activity.closeDrawer();
-            adapter.selectedId=-1;
+            conversationHistoryViewModel.setActiveConversationId("no id");
             adapter.notifyDataSetChanged();
 
         });
@@ -80,11 +89,11 @@ public class Fragment_drawer extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void itemSelected(int position){
-        adapter.notifyDataSetChanged();
+        String newSelectedId=historyList.get(position).getConversationId();
+        conversationHistoryViewModel.setActiveConversationId(newSelectedId);
         Toast.makeText(requireActivity(),historyList.get(position).getTitle(),Toast.LENGTH_SHORT).show();
-//            TODO: implement open chat feature from here
-            activity.closeDrawer();
-            activity.changeFragment(new Fragment_chat().getInstance(historyList.get(position).getConversationId()));
+        activity.closeDrawer();
+        activity.changeFragment(new Fragment_chat().getInstance(newSelectedId));
 
     }
 

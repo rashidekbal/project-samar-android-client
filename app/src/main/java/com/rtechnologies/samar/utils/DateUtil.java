@@ -17,13 +17,17 @@ public class DateUtil {
     public static String getTimeDiff(Date date){
         Date currentDate=new Date();
         long diff=currentDate.getTime()-date.getTime();
-        long min=(diff/(1000*60));
+        int min=(int)(diff/(1000*60));
         if(min==0){return "just now";}
         if(min<60){
             return min+" minutes ago";
 
         }
-        long hours=(min/60);
+        int hours= min/60;
+        if(hours>24){
+            int days= hours/24;
+            return days+" day's ago";
+        }
         return hours+" hours ago";
 
 

@@ -1,5 +1,6 @@
 package com.rtechnologies.samar.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,8 @@ import com.rtechnologies.samar.databinding.FragmentChatBinding;
 import com.rtechnologies.samar.interfaces.ChatServiceCallback;
 import com.rtechnologies.samar.roomdb.schema.ChatSchema;
 import com.rtechnologies.samar.service.ServiceProvider;
-import com.rtechnologies.samar.utils.Logger;
+import com.rtechnologies.samar.utils.ToastUtil;
+import com.rtechnologies.samar.viewModel.ChatGroupViewModel;
 import com.rtechnologies.samar.viewModel.ChatViewModel;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class Fragment_chat extends Fragment {
     private ChatViewModel chatViewModel;
     private MainActivity activity;
     private  String lastMessage="";
+    private ChatGroupViewModel chatGroupViewModel;
     public Fragment_chat() {
         // Required empty public constructor
     }
@@ -67,8 +70,10 @@ public class Fragment_chat extends Fragment {
         viewBinding.prePrompt4.setOnClickListener(this::handlePrePromptCardClick);
         viewBinding.chatPauseBtn.setOnClickListener(this::handleSendMessageCancel);
         viewBinding.attachment.setOnClickListener(v-> Toast.makeText(requireActivity(),"coming soon",Toast.LENGTH_SHORT).show());
-        viewBinding.newChatIcon.setOnClickListener(v->{activity.changeFragment(new Fragment_chat());activity.closeDrawer();
-           });
+        viewBinding.newChatIcon.setOnClickListener(v->{activity.changeFragment(new Fragment_chat());
+            activity.closeDrawer();
+            chatGroupViewModel.setActiveConversationId("no id");
+        });
     }
 
     private void setupRecyclerView() {
@@ -80,12 +85,12 @@ public class Fragment_chat extends Fragment {
         activity=(MainActivity) requireActivity();
         list=new ArrayList<>();
         adapter=new MessageAdapter(requireActivity(),list);
-        chatViewModel=new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
+        chatViewModel=new ViewModelProvider(activity).get(ChatViewModel.class);
+        chatGroupViewModel=new ViewModelProvider(activity).get(ChatGroupViewModel.class);
         if(getArguments()!=null){
             conversationId=getArguments().getString("cId");
             loadChats();
         }else{
-            Logger.log("setting up new chat");
             setUpNewChat();
 
         }
@@ -100,6 +105,7 @@ public class Fragment_chat extends Fragment {
             ((MainActivity) activity).setUpDrawerToggleWithToolBar(viewBinding.toolbar);
         }
     }
+    @SuppressLint("NotifyDataSetChanged")
     private void loadChats(){
         if(conversationId==null){
         chatViewModel.getChats().observe(getViewLifecycleOwner(),list->{
@@ -108,7 +114,8 @@ public class Fragment_chat extends Fragment {
               viewBinding.newChatLayout.setVisibility(View.GONE);
               this.list.clear();
               this.list.addAll(list);
-              adapter.notifyItemRangeChanged(0,list.size());
+              adapter.notifyDataSetChanged();
+
               viewBinding.recyclerView.scrollToPosition(list.size()-1);
           }
         });}else{
@@ -118,7 +125,7 @@ public class Fragment_chat extends Fragment {
                     viewBinding.newChatLayout.setVisibility(View.GONE);
                     this.list.clear();
                     this.list.addAll(list);
-                    adapter.notifyItemRangeChanged(0,list.size());
+                    adapter.notifyDataSetChanged();
                     viewBinding.recyclerView.scrollToPosition(list.size()-1);
                 }
             });
@@ -154,36 +161,44 @@ public class Fragment_chat extends Fragment {
     }
 
     private void handleMessageSend(String message) {
-        Logger.log("old conversation start");
+
         ServiceProvider.chatService.newMessage(MessageType.TEXT.toString(), conversationId, message, new ChatServiceCallback() {
             @Override
             public void onNewChatSuccess(String conversation_id) {
                 setStateChatCompleted();
 
+
             }
 
             @Override
             public void onFailure(String message) {
-                Logger.log("from chat fragment send message"+message);
+                setStateChatCompleted();
+                viewBinding.messageInput.setText(lastMessage);
+                ToastUtil.showToastShort(requireActivity(),"something went wrong...");
+
 
             }
         });
     }
 
     private void handleNewChat(String message) {
-        Logger.log("new conversation start");
         ServiceProvider.chatService.newConversation(MessageType.TEXT.toString(), message, new ChatServiceCallback() {
             @Override
             public void onNewChatSuccess(String conversation_id) {
                 setStateChatCompleted();
                 conversationId=conversation_id;
+                chatGroupViewModel.setActiveConversationId(conversation_id);
                 loadChats();
 
             }
 
             @Override
             public void onFailure(String message) {
-                Logger.log("from chat fragment new chat"+message);
+                setStateChatCompleted();
+                viewBinding.messageInput.setText(lastMessage);
+                ToastUtil.showToastShort(requireActivity(),"something went wrong...");
+
+
 
             }
         });
@@ -205,5 +220,6 @@ public class Fragment_chat extends Fragment {
 
 
     }
+
 
 }

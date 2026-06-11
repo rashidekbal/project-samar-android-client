@@ -21,7 +21,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     Context context;
     List<ChatGroupSchema> list;
     ConversationHistoryCardInterface callbackInterface;
-    public int selectedId;
+    public String selectedConvId;
     public HistoryAdapter(Context context,List<ChatGroupSchema> list,ConversationHistoryCardInterface callbackInterface){
         this.context=context;
         this.list=list;
@@ -50,14 +50,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
          int position=holderView.getAbsoluteAdapterPosition();
          if(holderView instanceof HistoryCard){
              HistoryCard holder=(HistoryCard) holderView;
-             if (list.get(position).getId()==selectedId)holder.mainContainer.setCardBackgroundColor(context.getResources().getColor(R.color.surface3,null));
+             if (list.get(position).getConversationId().equals( selectedConvId))holder.mainContainer.setCardBackgroundColor(context.getResources().getColor(R.color.surface3,null));
              else holder.mainContainer.setCardBackgroundColor(context.getResources().getColor(R.color.surface2,null));
              holder.title.setText(list.get(position).getTitle());
-             holder.mainContainer.setOnClickListener(v-> {
-                 callbackInterface.onSelectItem(position);
-                 selectedId=list.get(position).getId();
-
-             });
+             holder.mainContainer.setOnClickListener(v-> callbackInterface.onSelectItem(position));
              holder.time.setText(DateUtil.getTimeDiff(DateUtil.getDateObject(list.get(position).getTimeStamp())));
          }
 

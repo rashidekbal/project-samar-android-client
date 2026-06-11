@@ -1,7 +1,6 @@
 package com.rtechnologies.samar.service;
 
 import com.androidnetworking.error.ANError;
-import com.rtechnologies.samar.Samar;
 import com.rtechnologies.samar.constant.MessageType;
 import com.rtechnologies.samar.constant.NetworkOperationTags;
 import com.rtechnologies.samar.interfaces.ApiResponseInterface;
@@ -29,7 +28,6 @@ public class ChatService extends ChatBluePrint {
     @Override
     public void newConversation(String type,String message, ChatServiceCallback callback) {
         dbHelper.insertChat(true,type,message, DateUtil.getTimeStamp(), id -> {
-            Logger.log("new conversation message insertid"+id);
 //                message inserted to db
             try {
                 chatApiProvider.newConversation(String.valueOf(id), message, new ApiResponseInterface() {
@@ -50,31 +48,30 @@ public class ChatService extends ChatBluePrint {
                             //insert new chat group history
                             dbHelper.insertNewGroup(conversation_id,title,time_stamp);
                             //update the send chat metadata
-                            Logger.log("id returned"+mid+"message_id: "+message_id+"conversationid: "+conversation_id);
                             dbHelper.updateMessageId(mid,message_id,conversation_id);
                             //insert received response in db
                             dbHelper.insertChat(false, MessageType.TEXT.toString(),conversation_id,response_id,response_message,time_stamp);
                             callback.onNewChatSuccess(conversation_id);
                         } catch (JSONException e) {
-//                            TODO: handle json exception
                             Logger.log("from chatService, Json exception"+ e);
                             callback.onFailure(e.toString());
+                            dbHelper.remove_chatsWithoutParent();
                         }
 
                     }
 
                     @Override
                     public void onError(ANError error) {
-                        //TODO: handle error gracefully
                         Logger.log("from chatService, apiError"+error.toString());
                         callback.onFailure(error.toString());
+                        dbHelper.remove_chatsWithoutParent();
 
 
 
                     }
                 });
             } catch (JSONException e) {
-//                    TODO:handle exception gracefully
+                dbHelper.remove_chatsWithoutParent();
                 Logger.log("from chatService, Json exception"+ e);
                 callback.onFailure(e.toString());
             }
@@ -106,24 +103,24 @@ public class ChatService extends ChatBluePrint {
                             dbHelper.insertChat(false,MessageType.TEXT.toString(),conversation_id,response_id,response_message,time_stamp);
                             callback.onNewChatSuccess(conversation_id);
                         } catch (JSONException e) {
-//                            TODO: handle json exception
                             Logger.log("from chatService, Json exception"+ e);
                             callback.onFailure(e.toString());
+                            dbHelper.remove_chatsWithoutParent();
                         }
 
                     }
 
                     @Override
                     public void onError(ANError error) {
-                        //TODO: handle error gracefully
+                        dbHelper.remove_chatsWithoutParent();
                         Logger.log("from chatService, apiError"+error.toString());
                         callback.onFailure(error.toString());
 
                     }
                 });
             } catch (JSONException e) {
-//                  TODO:handle exception gracefully
                 Logger.log("from chatService, Json exception"+ e);
+                dbHelper.remove_chatsWithoutParent();
                 callback.onFailure(e.toString());
             }
         });
@@ -132,7 +129,7 @@ public class ChatService extends ChatBluePrint {
     }
     @Override
     public void cancelMessageSending(){
-        ApiProvider.helper.nm.cancelRequest(NetworkOperationTags.CHAT_SEND.toString());
-        new DbHelper(Samar.getGlobalContext()).remove_chatsWithoutParent();
+        ApiProvider.helper.cancelRequest(NetworkOperationTags.CHAT_SEND.toString());
+        dbHelper.remove_chatsWithoutParent();
     }
 }
